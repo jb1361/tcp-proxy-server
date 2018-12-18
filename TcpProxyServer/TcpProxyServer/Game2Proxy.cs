@@ -34,18 +34,14 @@ namespace TcpProxyServer
                 NetworkStream stream = client.GetStream();
                 data = null;
                 int i;
-                while ((i = stream.Read(bytes, 0, bytes.Length)) != 0)
-                {
-                    // Translate data bytes to a ASCII string.
-                    data = System.Text.Encoding.ASCII.GetString(bytes, 0, i);
-                    Console.WriteLine("Received: {0}", data);
-                }
-                Console.WriteLine("Server: " + data);               
+                data = stream.Read(bytes, 0, bytes.Length).ToString();                               
+                Console.WriteLine("Game: " + data);
+                SendData2Game(bytes);
             }
         }
         public void SendData2Game(Byte[] bytes)
         {
-
+            client.GetStream().Write(bytes, 0, bytes.Length);
         }
     }
 }
