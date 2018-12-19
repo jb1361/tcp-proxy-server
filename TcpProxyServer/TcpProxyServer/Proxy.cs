@@ -4,7 +4,7 @@ namespace TcpProxyServer
 {
     class Proxy
     {
-        public Proxy(string to_host, string from_host, int port) {
+        public Proxy(string from_host, string to_host, int port) {
             Console.WriteLine("Proxy(" + port + "): Creating Proxy");
             Game2Proxy g2p = new Game2Proxy(from_host, port);
             Proxy2Server p2s = new Proxy2Server(to_host, port);         

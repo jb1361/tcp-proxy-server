@@ -8,7 +8,7 @@ namespace TcpProxyServer
     {
         static void Main(string[] args)
         {
-            Proxy prox = new Proxy("0.0.0.0", "0.0.0.1", 4000);
+            Proxy prox = new Proxy("0.0.0.0", "64.237.39.158", 7880);
         }
     }
 }
