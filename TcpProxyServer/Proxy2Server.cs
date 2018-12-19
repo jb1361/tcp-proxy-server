@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Sockets;
@@ -15,40 +16,43 @@ namespace TcpProxyServer
     {
         public string host;
         public int port;
-        public Game2Proxy Game;
-        private TcpClient client;
+        public TcpClient client;
         private TcpListener listener;
         public Proxy2Server(string host, int port)
         {
             this.host = host;
             this.port = port;
-            client = new TcpClient();            
+            client = new TcpClient();
+            client.Connect(this.host, this.port);
         }
         public void StartListener()
         {
-            IPAddress ip = IPAddress.Parse(host);
-            listener = new TcpListener(ip, port);
+            IPAddress ip = IPAddress.Parse(this.host);
+            listener = new TcpListener(ip, this.port);
             listener.Start();
             Byte[] bytes = new Byte[4096];
             String data = null;
-            // Enter the listening loop.
+            // Enter the listening loop.            
             while (true)
             {
                 client = listener.AcceptTcpClient();
-                NetworkStream stream = client.GetStream();
+                Stream stream = client.GetStream();
                 data = null;
                 data = stream.Read(bytes, 0, bytes.Length).ToString();
                 Console.WriteLine("Game: " + data);
-                SendData2Server(bytes);
+                SendData2Game(bytes);
             }
         }
         public void SendData2Server(Byte[] bytes)
         {
-            client.GetStream().Write(bytes, 0, bytes.Length);
+            NetworkStream stream = client.GetStream();
+            stream.Write(bytes, 0, bytes.Length);
+            stream.Flush();
+            stream.Close();
         }
         public void SendData2Game(Byte[] bytes)
         {
-            Game.SendData2Game(bytes);
+            //Game.SendData2Game(bytes);
         }
     }
 }
