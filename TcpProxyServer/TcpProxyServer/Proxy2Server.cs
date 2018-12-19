@@ -13,33 +13,43 @@ namespace TcpProxyServer
     /// </summary>
     class Proxy2Server
     {
-        Game2Proxy game = null;
-        public Proxy2Server(IPAddress ip, int port)
-        {  
-            TcpListener listener = new TcpListener(ip, port);
+        public string host;
+        public int port;
+        public Game2Proxy Game;
+        private TcpClient client;
+        private TcpListener listener;
+        public Proxy2Server(string host, int port)
+        {
+            this.host = host;
+            this.port = port;
+            client = new TcpClient();            
+        }
+        public void StartListener()
+        {
+            IPAddress ip = IPAddress.Parse(host);
+            listener = new TcpListener(ip, port);
             listener.Start();
             Byte[] bytes = new Byte[4096];
             String data = null;
             // Enter the listening loop.
             while (true)
             {
-                TcpClient client = listener.AcceptTcpClient();
+                client = listener.AcceptTcpClient();
                 NetworkStream stream = client.GetStream();
                 data = null;
-                int i;
-                while ((i = stream.Read(bytes, 0, bytes.Length)) != 0)
-                {
-                    // Translate data bytes to a ASCII string.
-                    data = System.Text.Encoding.ASCII.GetString(bytes, 0, i);
-                    Console.WriteLine("Received: {0}", data);
-                }
-                Console.WriteLine("Server: " + data);               
+                data = stream.Read(bytes, 0, bytes.Length).ToString();
+                Console.WriteLine("Game: " + data);
+                SendData2Server(bytes);
             }
         }
-
-        public void ForwardData()
+        public void SendData2Server(Byte[] bytes)
         {
-
+            client.GetStream().Write(bytes, 0, bytes.Length);
+        }
+        public void SendData2Game(Byte[] bytes)
+        {
+            Game.SendData2Game(bytes);
         }
     }
 }
+

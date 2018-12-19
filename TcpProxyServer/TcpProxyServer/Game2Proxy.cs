@@ -10,18 +10,17 @@ namespace TcpProxyServer
     {
         public string host;
         public int port;
-        public Proxy2Server Server;
+        public Proxy2Server Proxy;
         private TcpClient client;
         private TcpListener listener;
         public Game2Proxy(string host, int port)
         {
-            host = this.host;
-            port = this.port;
-            client = new TcpClient();
-            StartListener();
-        }   
+            this.host = host;
+            this.port = port;
+            client = new TcpClient();           
+        }
         public void StartListener()
-        {
+        {          
             IPAddress ip = IPAddress.Parse(host);
             listener = new TcpListener(ip, port);
             listener.Start();
@@ -33,11 +32,14 @@ namespace TcpProxyServer
                 client = listener.AcceptTcpClient();
                 NetworkStream stream = client.GetStream();
                 data = null;
-                int i;
-                data = stream.Read(bytes, 0, bytes.Length).ToString();                               
+                data = stream.Read(bytes, 0, bytes.Length).ToString();
                 Console.WriteLine("Game: " + data);
-                SendData2Game(bytes);
+                SendData2Proxy(bytes);
             }
+        }
+        public void SendData2Proxy(Byte[] bytes)
+        {
+            Proxy.SendData2Server(bytes);
         }
         public void SendData2Game(Byte[] bytes)
         {
