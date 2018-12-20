@@ -40,6 +40,7 @@ namespace TcpProxyServer
             sock.Bind(localEndPoint);
             sock.Listen(1);
             Game = sock.Accept();
+            Server.Connect();
             Console.WriteLine("Proxy(" + port + ") Game: Connected");
             Byte[] bytes = new Byte[4096];            
             while (true)
@@ -67,21 +68,26 @@ namespace TcpProxyServer
         public int port;
         public Game2Proxy Game;
         public Socket Server;
+        IPEndPoint remoteEndPoint;
         public void Proxy2ServerStart()
         {          
             Console.WriteLine("Proxy(" + port + "): Starting server connection... ");
-            IPEndPoint remoteEndPoint = new IPEndPoint(this.host, this.port);
+            remoteEndPoint = new IPEndPoint(this.host, this.port);
             Server = new Socket(AddressFamily.InterNetwork,
-            SocketType.Stream, ProtocolType.Tcp);
-            Server.Connect(remoteEndPoint);
-            Console.WriteLine("Proxy(" + port + ") Server: Connected");            
+            SocketType.Stream, ProtocolType.Tcp);                                 
             Byte[] bytes = new Byte[4096];
-            while (true)
+            while (Server.Connected)
             {
                 Server.Receive(bytes);
                 Console.WriteLine("Server: " + Encoding.ASCII.GetString(bytes, 0, bytes.Length));
                 Game.Game.Send(bytes);
             }
+        }
+
+        public void Connect()
+        {
+            Server.Connect(remoteEndPoint);
+            Console.WriteLine("Proxy(" + port + ") Server: Connected");
         }
     }
 }
