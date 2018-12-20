@@ -11,41 +11,46 @@ namespace TcpProxyServer
     {
         IPAddress host;
         public int port;
-        public TcpClient Game;
-        private TcpListener listener;
+        public Socket Game;       
         Boolean connected = false;
         public Game2Proxy(string host, int port)
         {
             this.host = IPAddress.Parse(host);           
             this.port = port;
-            Game = new TcpClient();
+           // Game = new TcpClient();
             Console.WriteLine("Proxy("+ port + "): Waiting for a connection... ");           
             StartListener();
         }
      
         public void StartListener()
-        {
-            IPHostEntry ipHostInfo =Dns.GetHostEntry("127.0.0.1");        
+        {                  
             IPEndPoint localEndPoint = new IPEndPoint(this.host, this.port);
-            Socket listener = new Socket(AddressFamily.InterNetwork,
+            Game = new Socket(AddressFamily.InterNetwork,
             SocketType.Stream, ProtocolType.Tcp);
-            listener.Bind(localEndPoint);
-            listener.Listen(1);
+            Game.Bind(localEndPoint);
+            Game.Listen(1);
+            Game.Accept();
             Console.WriteLine("Proxy(" + port + "): Connected");
-            Byte[] bytes = new Byte[4096];                      
-            // Enter the listening loop.                    
+            Byte[] bytes = new Byte[4096];
+            while (true)
+            {
+                Game.Receive(bytes);               
+                Console.WriteLine("Game: " + bytes);
+                //SendData2Game(bytes);
+            }
         }
-        public void ReadData(Byte[] bytes)
+        public void ReadData()
         {
             String data = null;
-            Stream stream = Game.GetStream();
+            Byte[] bytes = new Byte[4096];
+            // Stream stream = Game.GetStream();
             data = null;
-            data = stream.Read(bytes, 0, bytes.Length).ToString();
+          //  data = stream.Read(bytes, 0, bytes.Length).ToString();
             Console.WriteLine("Game: " + data);
         }
         public void SendData2Proxy(Byte[] bytes)
         {
-            listener.AcceptSocket();
+            //listener.AcceptSocket();
             //Proxy.SendData2Server(bytes);
         }
         public void SendData2Game(Byte[] bytes)

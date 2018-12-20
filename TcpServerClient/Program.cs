@@ -18,7 +18,7 @@ namespace TcpServerClient
         public void run()
         {
             TcpClient client = new TcpClient();
-            client.Connect("192.168.1.10", 7880);
+            client.Connect("64.237.39.158", 7880);
             Stream strm = client.GetStream();
             ASCIIEncoding asen = new ASCIIEncoding();
             byte[] buff = asen.GetBytes("testing");
