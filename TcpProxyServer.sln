@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TcpServerClient", "TcpServe
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TcpProxyServer", "TcpProxyServer\TcpProxyServer.csproj", "{509856EF-7629-4E0B-A0C2-351F543196D4}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TcpListenerServer", "TcpListenerServer\TcpListenerServer.csproj", "{979058E2-15BB-4478-BF8C-8C3F39F4E461}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{509856EF-7629-4E0B-A0C2-351F543196D4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{509856EF-7629-4E0B-A0C2-351F543196D4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{509856EF-7629-4E0B-A0C2-351F543196D4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{979058E2-15BB-4478-BF8C-8C3F39F4E461}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{979058E2-15BB-4478-BF8C-8C3F39F4E461}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{979058E2-15BB-4478-BF8C-8C3F39F4E461}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{979058E2-15BB-4478-BF8C-8C3F39F4E461}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
