@@ -10,7 +10,7 @@ namespace TcpProxyServerNetSix
 
         public async Task StartServer()
         {
-            const string fromHost = "127.0.0.2";
+            const string fromHost = "0.0.0.0";
             const string toHost = "127.0.0.1";
             const int port = 1340;
             
@@ -27,20 +27,6 @@ namespace TcpProxyServerNetSix
             Thread serverReceiveThread = new Thread(proxyToServer.ReceiveServerData);
             clientReceiveThread.Start();
             serverReceiveThread.Start();
-            // while (true)
-            // {
-            //     if (clientToProxy.clientData != null)
-            //     {
-            //         proxyToServer.SendDataToServer(clientToProxy.clientData);
-            //         clientToProxy.clientData = null;
-            //     }
-            //     
-            //     if (proxyToServer.serverData != null)
-            //     {
-            //         clientToProxy.SendDataToClient(proxyToServer.serverData);
-            //         proxyToServer.serverData = null;
-            //     }
-            // }
         }
     }
 
@@ -68,7 +54,7 @@ namespace TcpProxyServerNetSix
             var bytes = new Byte[1024];
             while (true)
             {
-                Client.Receive(bytes, SocketFlags.None);
+                Client.ReceiveAsync(bytes, SocketFlags.None);
                 if (bytes.Any(b => b > 0))
                 {
                     var logBytes = bytes.Where(b => b > 0).ToArray();
