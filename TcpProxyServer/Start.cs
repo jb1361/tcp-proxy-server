@@ -4,11 +4,11 @@ using System.Text;
 
 namespace TcpProxyServer
 {
-    class Start
+    static class Start
     {
         static void Main(string[] args)
         {
-            Proxy prox = new Proxy("0.0.0.0", "66.55.155.190", 7881);            
+            Proxy prox = new Proxy("127.0.0.2", "127.0.0.1", 1340);
         }
     }
 }
